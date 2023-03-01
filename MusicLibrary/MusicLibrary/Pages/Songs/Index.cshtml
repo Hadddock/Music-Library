@@ -13,8 +13,15 @@
 
 <form>
     <p>
+        <select asp-for="SongGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
         Title: <input type="text" asp-for="SearchString"/>
         <input type="submit" value="Filter"/>
+        Artist: <input type="text" asp-for="SongArtist" />
+        <input type="submit" value="Filter" />
+        Album: <input type="text" asp-for="SongAlbum" />
+        <input type="submit" value="Filter" />
     </p>
 </form>
 <table class="table">

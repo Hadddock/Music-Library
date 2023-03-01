@@ -24,14 +24,39 @@ namespace MusicLibrary.Pages.Songs
 
         public async Task OnGetAsync()
         {
+            IQueryable<string> genreQuery = from s in _context.Song
+                                            orderby s.Genre
+                                            select s.Genre;
             
+
+
             var songs = from s in _context.Song
                         select s;
+
+            if (!string.IsNullOrEmpty(SongArtist))
+            {
+                songs = songs.Where(s => s.Artist.Contains(SongArtist));
+            }
+
             if (!string.IsNullOrEmpty(SearchString))
             {
                 songs = songs.Where(s => s.Title.Contains(SearchString));
 
             }
+
+            if (!string.IsNullOrEmpty(SongAlbum))
+            {
+                songs = songs.Where(s => s.Album.Contains(SongAlbum));
+
+            }
+
+
+
+            if (!string.IsNullOrEmpty(SongGenre))
+            {
+                songs = songs.Where(s => s.Genre.Contains(SongGenre));
+            }
+            Genres = new SelectList(await genreQuery.Distinct().ToListAsync());
             Song = await songs.ToListAsync();
 
             
@@ -42,10 +67,10 @@ namespace MusicLibrary.Pages.Songs
         public SelectList? Genres { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? SongGenre { get; set; }
-        public SelectList? Artists { get; set; }
+
         [BindProperty(SupportsGet =true)]
         public string? SongArtist { get; set; }
-        public SelectList? Albums { get; set;}
+
         [BindProperty(SupportsGet = true)]
         public string? SongAlbum { get; set;}
 
